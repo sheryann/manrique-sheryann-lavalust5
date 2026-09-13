@@ -1,62 +1,40 @@
 <?php
-
 defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
 class AuthController extends Controller
 {
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->call->helper('url');
-    }
-
     public function login()
     {
-        $this->call->view('auth/login');
-    }
-
-    public function authenticate()
-    {
-        if (session_status() == PHP_SESSION_NONE) {
+        if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
 
-        $username = $this->io->post('username');
-        $password = $this->io->post('password');
-
-        if ($username == 'admin' && $password == 'admin123') {
-
-            $_SESSION['logged_in'] = true;
-            $_SESSION['username'] = $username;
-
-            $this->call->database();
-
-            $this->call->model('ProductModel');
-
-            $data['products'] = $this->ProductModel->all();
-
-            $data['username'] = $username;
-
-            $this->call->view('products/index', $data);
-
-        } else {
-
-            redirect('/login');
-
-        }
-    }
-
-    public function logout()
-    {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
+        // Redirect to products if already logged in
+        if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
+            redirect('products');
+            exit();
         }
 
-        $_SESSION = [];
+        if ($this->request->method() == 'post')
+        {
+            $username = $this->request->post('username');
+            $password = $this->request->post('password');
 
-        session_destroy();
+            if ($username === 'admin' && $password === 'admin123')
+            {
+                $_SESSION['logged_in'] = true;
+                $_SESSION['username'] = 'admin';
 
-        redirect('/login');
+                session_write_close(); // Saves session state to disk/memory immediately
+                redirect('products');
+                exit();
+            }
+
+            $data['error'] = 'Invalid username or password.';
+            $this->call->view('products/login', $data);
+            return;
+        }
+
+        $this->call->view('products/login');
     }
 }
