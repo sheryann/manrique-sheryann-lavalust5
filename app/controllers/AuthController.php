@@ -10,9 +10,9 @@ class AuthController extends Controller
             session_start();
         }
 
-        // Redirect to products if already logged in
+        // If already logged in, go directly to products
         if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
-            redirect('products');
+            redirect('/products');
             exit();
         }
 
@@ -26,9 +26,7 @@ class AuthController extends Controller
                 $_SESSION['logged_in'] = true;
                 $_SESSION['username'] = 'admin';
 
-                session_write_close();
-
-                redirect('products');
+                redirect('/products');
                 exit();
             }
 
