@@ -64,7 +64,7 @@ $database['main'] = array(
     'username'	=> getenv('DB_USER') ?: 'avnadmin',
     'password'	=> getenv('DB_PASSWORD') ?: '',
     'database'	=> getenv('DB_NAME') ?: '',
-    'charset'	=> getenv('DB_CHARSET') ?: 'utf8mb4',
+    'charset'	=> getenv('DB_CHARSET') ?: 'utf8m4',
     'dbprefix'	=> getenv('DB_PREFIX') ?: '',
     // Optional for SQLite
     'path'      => ''
