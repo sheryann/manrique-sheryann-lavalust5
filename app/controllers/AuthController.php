@@ -16,44 +16,27 @@ class AuthController extends Controller
             exit();
         }
 
+        if ($this->request->method() == 'post')
+        {
+            $username = $this->request->post('username');
+            $password = $this->request->post('password');
+
+            if ($username === 'admin' && $password === 'admin123')
+            {
+                $_SESSION['logged_in'] = true;
+                $_SESSION['username'] = 'admin';
+
+                session_write_close();
+
+                redirect('products');
+                exit();
+            }
+
+            $data['error'] = 'Invalid username or password.';
+            $this->call->view('auth/login', $data);
+            return;
+        }
+
         $this->call->view('auth/login');
-    }
-
-    public function authenticate()
-    {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        $username = $this->request->post('username');
-        $password = $this->request->post('password');
-
-        if ($username === 'admin' && $password === 'admin123') {
-
-            $_SESSION['logged_in'] = true;
-            $_SESSION['username'] = 'admin';
-
-            session_write_close();
-
-            redirect('products');
-            exit();
-        }
-
-        redirect('login');
-        exit();
-    }
-
-    public function logout()
-    {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        $_SESSION = [];
-
-        session_destroy();
-
-        redirect('login');
-        exit();
     }
 }
