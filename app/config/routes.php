@@ -1,3 +1,4 @@
+```php
 <?php
 
 defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
@@ -11,8 +12,6 @@ $router->any('/login', 'AuthController::login');
 $router->get('/products', 'ProductController::index')->middleware('auth');
 
 $router->any('/products/create', 'ProductController::create')->middleware('auth');
-
-$router->post('/products/store', 'ProductController::store')->middleware('auth');
 
 $router->any('/products/edit/{id}', 'ProductController::edit')->middleware('auth');
 
@@ -43,4 +42,3 @@ $router->get('/not-logged-in', function()
     echo 'Please Login First.';
 });
 
-?>

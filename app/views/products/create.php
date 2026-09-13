@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -105,7 +106,7 @@
 
         <h2>Add Product</h2>
 
-        <form action="<?= site_url('/products/store') ?>" method="POST">
+        <form action="<?= site_url('/products/create') ?>" method="POST">
 
             <label>Product Name</label>
 
@@ -172,3 +173,4 @@
 </body>
 
 </html>
+
