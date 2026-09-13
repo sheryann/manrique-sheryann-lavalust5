@@ -132,7 +132,7 @@
             Sign in to manage product records.
         </p>
 
-        <form action="<?= site_url('/authenticate') ?>" method="POST">
+        <form action="<?= site_url('/login') ?>" method="POST">
 
             <div class="form-group">
                 <label>Username</label>
