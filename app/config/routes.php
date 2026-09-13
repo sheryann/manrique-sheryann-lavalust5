@@ -47,6 +47,8 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 //$router->get('/', 'Welcome::index');
 
 
+
+
 $router->get('/', 'AuthController::login');
 
 $router->get('/login', 'AuthController::login');
@@ -56,22 +58,25 @@ $router->post('/authenticate', 'AuthController::authenticate');
 $router->get('/logout', 'AuthController::logout');
 
 
-$router->group(
-    ['prefix' => '/products', 'middleware' => 'auth'],
-    function ($router) {
+// Product routes with authentication middleware
 
-        $router->get('', 'ProductController::index');
+$router->get('/products', 'ProductController::index')
+       ->middleware('auth');
 
-        $router->get('/create', 'ProductController::create');
+$router->get('/products/create', 'ProductController::create')
+       ->middleware('auth');
 
-        $router->post('/store', 'ProductController::store');
+$router->post('/products/store', 'ProductController::store')
+       ->middleware('auth');
 
-        $router->get('/edit/{id}', 'ProductController::edit');
+$router->get('/products/edit/{id}', 'ProductController::edit')
+       ->middleware('auth');
 
-        $router->post('/update/{id}', 'ProductController::update');
+$router->post('/products/update/{id}', 'ProductController::update')
+       ->middleware('auth');
 
-        $router->get('/delete/{id}', 'ProductController::delete');
+$router->get('/products/delete/{id}', 'ProductController::delete')
+       ->middleware('auth');
 
-        $router->post('/destroy/{id}', 'ProductController::destroy');
-    }
-);
+$router->post('/products/destroy/{id}', 'ProductController::destroy')
+       ->middleware('auth');
