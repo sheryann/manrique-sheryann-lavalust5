@@ -2,36 +2,31 @@
 
 defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
+$router->get('/', 'AuthController::login');
 
-$router->any('/', 'AuthController::login');
-$router->any('/login', 'AuthController::login');
+$router->get('/login', 'AuthController::login');
 
+$router->post('/authenticate', 'AuthController::authenticate');
 
-
-
-$router->get('/products', 'ProductController::index')->middleware('auth');
-
-$router->any('/products/create', 'ProductController::create')->middleware('auth');
-
-$router->any('/products/edit/{id}', 'ProductController::edit')->middleware('auth');
-
-$router->any('/products/delete/{id}', 'ProductController::delete')->middleware('auth');
+$router->get('/logout', 'AuthController::logout');
 
 
+$router->group(
+    ['prefix' => '/products', 'middleware' => 'auth'],
+    function ($router) {
 
-$router->get('/logout', function()
-{
-    $_SESSION = array();
+        $router->get('', 'ProductController::index');
 
-    session_destroy();
+        $router->get('/create', 'ProductController::create');
 
-    redirect('login');
-    exit;
-});
+        $router->post('/store', 'ProductController::store');
 
-$router->get('/not-logged-in', function()
-{
-    echo 'Please Login First.';
-});
+        $router->get('/edit/{id}', 'ProductController::edit');
 
-?>
+        $router->post('/update/{id}', 'ProductController::update');
+
+        $router->get('/delete/{id}', 'ProductController::delete');
+
+        $router->post('/destroy/{id}', 'ProductController::destroy');
+    }
+);
